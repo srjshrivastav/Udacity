@@ -19,7 +19,7 @@ function createStore(reducer){
     const dispatch=(action)=>{
         //call the function to change the state
         state=reducer(state,action)
-        listneres.forEach((listnere)=>listneres())
+        listneres.forEach((listnere)=>listnere())
     }
 
     const getState=()=> state
@@ -35,9 +35,24 @@ function createStore(reducer){
 
 //App Code
 function todos(state=[],action){
-    if(action.type==='add_todo')
-        return state.concate([action.todo])
+    if(action.type==='ADD_TODO')
+        return state.concat([action.todo])
 
     return state
 }
+
+const store = createStore(todos)
+
+store.subscribe(()=>{
+    console.log('This is the state ',store.getState())
+})
+
+store.dispatch({
+    type:'ADD_TODO',
+    todo:{
+        id:0,
+        name:'Learn redux',
+        complete:false
+    }
+})
 
