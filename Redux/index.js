@@ -10,6 +10,9 @@ function createStore(){
 
     const subscribe=(listnere)=>{
         listneres.push(listnere)
+        return ()=>{
+            listneres=listneres.filter((l)=>l !== listnere)
+        }
     }
 
     const getState=()=> state
@@ -21,6 +24,7 @@ function createStore(){
 }
     const  store = createStore()
 
-    store.subscribe(()=>{
+    const unsubscribe = store.subscribe(()=>{
         console.log('The new state is ',store.getState())
     })
+    unsubscribe()
