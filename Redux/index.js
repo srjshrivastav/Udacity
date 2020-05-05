@@ -1,3 +1,5 @@
+
+//updating the state
 function todos(state,action){
     if(action.type==='add_todo')
         return state.concate([action.todo])
