@@ -54,10 +54,10 @@ function removeToDoAction(todo){
     }
 }
 
-function toggleToDoAction(todo){
+function toggleToDoAction(id){
     return{
         type:TOGGLE_TODO,
-        todo
+        id:id
     }
 }
 function addGoalAction(goal){
@@ -75,15 +75,16 @@ function removeGoalAction(goal){
 }
 //***************************end******************************
 function todos(state=[],action){
+    console.log('my',state)
     switch(action.type){
         case ADD_TODO:
             return state.concat([action.todo])
         case REMOVE_TODO:
             return state.filter((todo)=>todo.id!==action.id)
         case TOGGLE_TODO:
-            return state.map((todo)=>{
+            return state.map((todo)=>(
                 todo.id !== action.id?todo:Object.assign({},todo,{complete:!todo.complete})
-            })
+            ))
         default:
             return state
     }
@@ -112,7 +113,11 @@ function app(state={},action){
 const store = createStore(app)
 
 store.subscribe(()=>{
-    console.log('This is the state ',store.getState())
+    const {todos, goals} = store.getState()
+  document.getElementById('todoItem').innerHTML = ''
+  document.getElementById('goalItem').innerHTML = ''
+    todos.forEach((todo)=>addTodoDOM(todo))
+    goals.forEach((goal)=>addGaolDOM(goal))
 })
 
 function addTodo(){
@@ -136,3 +141,22 @@ function addGoal(){
 
 document.getElementById('todoBtn').addEventListener('click',addTodo)
 document.getElementById('goalBtn').addEventListener('click',addGoal)
+
+function addTodoDOM(todo){
+    const node = document.createElement('li')
+    const txt = document.createTextNode(todo.name)
+    node.appendChild(txt)
+    node.style.textDecoration = todo.complete?'line-through':'none'
+    node.addEventListener('click',()=>{
+          store.dispatch(toggleToDoAction(todo.id))
+    })
+
+    document.getElementById('todoItem').appendChild(node)
+}
+function addGaolDOM(goal){
+    const node = document.createElement('li')
+    const txt = document.createTextNode(goal.name)
+    node.appendChild(txt)
+
+    document.getElementById('goalItem').appendChild(node)
+}
