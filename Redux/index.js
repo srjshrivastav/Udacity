@@ -125,7 +125,7 @@ store.subscribe(()=>{
 function addTodo(){
     let input = document.getElementById('todo')
     let name = input.value 
-    store.dispatch(addToDoAction({
+    checkAndDispatch(store,addToDoAction({
         name,
         complete:false,
         id: generateId()
@@ -135,7 +135,7 @@ function addTodo(){
 function addGoal(){
     let input = document.getElementById('goal')
     let name = input.value 
-    store.dispatch(addGoalAction({
+    checkAndDispatch(store,addGoalAction({
         name,
         id: generateId()
     }))
@@ -158,14 +158,14 @@ function addTodoDOM(todo){
     const txt = document.createTextNode(todo.name)
 
     const rmBtn = createRemoveButton(()=>{
-        store.dispatch(removeToDoAction(todo.id))
+        checkAndDispatch(store,removeToDoAction(todo.id))
     })
     node.appendChild(txt)
     node.appendChild(rmBtn)
     const btn = document.createElement('button')
     node.style.textDecoration = todo.complete?'line-through':'none'
     node.addEventListener('click',()=>{
-          store.dispatch(toggleToDoAction(todo.id))
+        checkAndDispatch(store,toggleToDoAction(todo.id))
     })
 
     document.getElementById('todoItem').appendChild(node)
@@ -174,10 +174,19 @@ function addGaolDOM(goal){
     const node = document.createElement('li')
     const txt = document.createTextNode(goal.name)
     const btn = createRemoveButton(()=>{
-        store.dispatch(removeGoalAction(goal.id))
+        checkAndDispatch(store,removeGoalAction(goal.id))
     })
     node.appendChild(txt)
     node.appendChild(btn)
 
     document.getElementById('goalItem').appendChild(node)
+}
+
+function checkAndDispatch(store,action){
+    console.log(action)
+    if(action.type===ADD_TODO && action.todo.name.toLowerCase().includes('bitcoin'))
+        return alert('Nope! Thats a bad Idea')
+    if(action.type===ADD_GOAL && action.goal.name.toLowerCase().includes('bitcoin'))
+        return alert('Nope! Thats a bad Idea')
+    store.dispatch(action)
 }
