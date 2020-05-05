@@ -40,6 +40,40 @@ const ADD_TODO = 'ADD_TODO'
 const REMOVE_TODO = 'REMOVE_TODO'
 const TOGGLE_TODO = 'TOGGLE_TODO'
 //App Code
+//*************************Action Creators********************************
+function addToDoAction(todo){
+    return{
+        type:ADD_TODO,
+        todo
+    }
+}
+function removeToDoAction(todo){
+    return{
+        type:REMOVE_TODO,
+        todo
+    }
+}
+
+function toggleToDoAction(todo){
+    return{
+        type:TOGGLE_TODO,
+        todo
+    }
+}
+function addGoalAction(goal){
+    return{
+        type:ADD_GOAL,
+        goal
+    }
+}
+
+function removeGoalAction(goal){
+    return{
+        type:REMOVE_GOAL,
+        goal
+    }
+}
+//***************************end******************************
 function todos(state=[],action){
     switch(action.type){
         case ADD_TODO:
