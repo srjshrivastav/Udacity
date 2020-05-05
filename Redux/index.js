@@ -6,10 +6,21 @@ function createStore(){
     //4. update the state
 
     let state
+    let listneres=[]
 
-    getState=()=> state
+    const subscribe=(listnere)=>{
+        listneres.push(listnere)
+    }
+
+    const getState=()=> state
 
     return{
-        getState
+        getState,
+        subscribe
     }
 }
+    const  store = createStore()
+
+    store.subscribe(()=>{
+        console.log('The new state is ',store.getState())
+    })
