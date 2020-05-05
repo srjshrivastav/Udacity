@@ -109,10 +109,18 @@ function generateId(){
 //         goals : goals(state.goals,action)
 //     }
 // }
+const check=(store)=>(next)=>(action)=>{
+    if(action.type===ADD_TODO && action.todo.name.toLowerCase().includes('bitcoin'))
+            return alert('Nope! Thats a bad Idea')
+    if(action.type===ADD_GOAL && action.goal.name.toLowerCase().includes('bitcoin'))
+            return alert('Nope! Thats a bad Idea')
+    return next(action)
+
+}
 const store = Redux.createStore(Redux.combineReducers({
     todos,
     goals
-}))
+}),Redux.applyMiddleware(check))
 
 store.subscribe(()=>{
     const {todos, goals} = store.getState()
@@ -125,7 +133,8 @@ store.subscribe(()=>{
 function addTodo(){
     let input = document.getElementById('todo')
     let name = input.value 
-    checkAndDispatch(store,addToDoAction({
+    input.value=''
+    store.dispatch(addToDoAction({
         name,
         complete:false,
         id: generateId()
@@ -135,7 +144,8 @@ function addTodo(){
 function addGoal(){
     let input = document.getElementById('goal')
     let name = input.value 
-    checkAndDispatch(store,addGoalAction({
+    input.value=''
+    store.dispatch(addGoalAction({
         name,
         id: generateId()
     }))
@@ -158,14 +168,14 @@ function addTodoDOM(todo){
     const txt = document.createTextNode(todo.name)
 
     const rmBtn = createRemoveButton(()=>{
-        checkAndDispatch(store,removeToDoAction(todo.id))
+        store.dispatch(removeToDoAction(todo.id))
     })
     node.appendChild(txt)
     node.appendChild(rmBtn)
     const btn = document.createElement('button')
     node.style.textDecoration = todo.complete?'line-through':'none'
     node.addEventListener('click',()=>{
-        checkAndDispatch(store,toggleToDoAction(todo.id))
+        store.dispatch(toggleToDoAction(todo.id))
     })
 
     document.getElementById('todoItem').appendChild(node)
@@ -174,19 +184,10 @@ function addGaolDOM(goal){
     const node = document.createElement('li')
     const txt = document.createTextNode(goal.name)
     const btn = createRemoveButton(()=>{
-        checkAndDispatch(store,removeGoalAction(goal.id))
+        store.dispatch(removeGoalAction(goal.id))
     })
     node.appendChild(txt)
     node.appendChild(btn)
 
     document.getElementById('goalItem').appendChild(node)
-}
-
-function checkAndDispatch(store,action){
-    console.log(action)
-    if(action.type===ADD_TODO && action.todo.name.toLowerCase().includes('bitcoin'))
-        return alert('Nope! Thats a bad Idea')
-    if(action.type===ADD_GOAL && action.goal.name.toLowerCase().includes('bitcoin'))
-        return alert('Nope! Thats a bad Idea')
-    store.dispatch(action)
 }
