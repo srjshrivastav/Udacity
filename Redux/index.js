@@ -1,14 +1,6 @@
+//Library code
 
-//updating the state
-function todos(state=[],action){
-    if(action.type==='add_todo')
-        return state.concate([action.todo])
-
-    return state
-}
-
-
-function createStore(){
+function createStore(reducer){
     // the Store should have four parts
     //1. the state
     //2. get the state
@@ -26,7 +18,7 @@ function createStore(){
     }
     const dispatch=(action)=>{
         //call the function to change the state
-        state=todos(state,action)
+        state=reducer(state,action)
         listneres.forEach((listnere)=>listneres())
     }
 
@@ -38,3 +30,14 @@ function createStore(){
         dispatch
     }
 }
+
+
+
+//App Code
+function todos(state=[],action){
+    if(action.type==='add_todo')
+        return state.concate([action.todo])
+
+    return state
+}
+
