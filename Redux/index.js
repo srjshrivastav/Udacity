@@ -47,10 +47,10 @@ function addToDoAction(todo){
         todo
     }
 }
-function removeToDoAction(todo){
+function removeToDoAction(id){
     return{
         type:REMOVE_TODO,
-        todo
+        id:id
     }
 }
 
@@ -67,10 +67,10 @@ function addGoalAction(goal){
     }
 }
 
-function removeGoalAction(goal){
+function removeGoalAction(id){
     return{
         type:REMOVE_GOAL,
-        goal
+        id:id
     }
 }
 //***************************end******************************
@@ -142,10 +142,25 @@ function addGoal(){
 document.getElementById('todoBtn').addEventListener('click',addTodo)
 document.getElementById('goalBtn').addEventListener('click',addGoal)
 
+
+function createRemoveButton(onClick){
+    const removeBtn = document.createElement('button')
+    removeBtn.innerHTML='X'
+    removeBtn.addEventListener('click',onClick)
+    return removeBtn
+
+}
+
 function addTodoDOM(todo){
     const node = document.createElement('li')
     const txt = document.createTextNode(todo.name)
+
+    const rmBtn = createRemoveButton(()=>{
+        store.dispatch(removeToDoAction(todo.id))
+    })
     node.appendChild(txt)
+    node.appendChild(rmBtn)
+    const btn = document.createElement('button')
     node.style.textDecoration = todo.complete?'line-through':'none'
     node.addEventListener('click',()=>{
           store.dispatch(toggleToDoAction(todo.id))
@@ -156,7 +171,11 @@ function addTodoDOM(todo){
 function addGaolDOM(goal){
     const node = document.createElement('li')
     const txt = document.createTextNode(goal.name)
+    const btn = createRemoveButton(()=>{
+        store.dispatch(removeGoalAction(goal.id))
+    })
     node.appendChild(txt)
+    node.appendChild(btn)
 
     document.getElementById('goalItem').appendChild(node)
 }
