@@ -1,6 +1,6 @@
 
 //updating the state
-function todos(state,action){
+function todos(state=[],action){
     if(action.type==='add_todo')
         return state.concate([action.todo])
 
@@ -24,11 +24,17 @@ function createStore(){
             listneres=listneres.filter((l)=>l !== listnere)
         }
     }
+    const dispatch=(action)=>{
+        //call the function to change the state
+        state=todos(state,action)
+        listneres.forEach((listnere)=>listneres())
+    }
 
     const getState=()=> state
 
     return{
         getState,
-        subscribe
+        subscribe,
+        dispatch
     }
 }
