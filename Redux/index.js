@@ -99,6 +99,10 @@ function goals(state=[],action){
             return state
     }
 }
+
+function generateId(){
+    return Math.random().toString(36).substring(2)+(new Date()).getTime().toString(36)
+}
 function app(state={},action){
     return {
         todos : todos(state.todos,action),
@@ -111,12 +115,24 @@ store.subscribe(()=>{
     console.log('This is the state ',store.getState())
 })
 
-store.dispatch({
-    type:'ADD_TODO',
-    todo:{
-        id:0,
-        name:'Learn redux',
-        complete:false
-    }
-})
+function addTodo(){
+    let input = document.getElementById('todo')
+    let name = input.value 
+    store.dispatch(addToDoAction({
+        name,
+        complete:false,
+        id: generateId()
+    }))
+}
 
+function addGoal(){
+    let input = document.getElementById('goal')
+    let name = input.value 
+    store.dispatch(addGoalAction({
+        name,
+        id: generateId()
+    }))
+}
+
+document.getElementById('todoBtn').addEventListener('click',addTodo)
+document.getElementById('goalBtn').addEventListener('click',addGoal)
