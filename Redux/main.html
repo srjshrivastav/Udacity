@@ -30,6 +30,7 @@
 
         <script type="text/javascript" src='index.js'></script>
         <script type="text/babel">
+
         function LIST(props){
     return(
         <ul>
@@ -39,12 +40,19 @@
     )
 }
 class TODO extends React.Component{
+    addItem=(e)=>{
+        e.preventDefault()
+        const name = this.input.value
+        this.input.value=''
+        
+    }
+
     render(){
         return(
             <div>
                 <h2>TODOs</h2>
                 <input id='todo' placeholder='Enter TODO' ref={(value)=>this.input=value} />
-                <button onClick={()=>addItem}> ADD TODO</button>
+                <button onClick={(event)=>this.addItem(event)}> ADD TODO</button>
 
                 <LIST />
             </div>
@@ -53,12 +61,22 @@ class TODO extends React.Component{
 }
 
 class GOAL extends React.Component{
+    addItem=(e)=>{
+        e.preventDefault()
+        const name = this.input.value
+        this.input.value=''
+        this.props.store.dispatch(addGoalAction({
+        name,
+        id: generateId()
+    }))
+
+    }
     render(){
         return(
             <div>
                 <h2>GOAL</h2>
                 <input id='goal' placeholder='Enter GOAL' ref={(value)=>this.input=value} />
-                <button onClick={()=>addItem}> ADD TODO</button>
+                <button onClick={(event)=>this.addItem(event)}> ADD GOAL</button>
                 <LIST />
             </div>
         )
@@ -70,14 +88,14 @@ class App extends React.Component{
     render(){
         return(
             <div>
-                <TODO />
-                <GOAL />
+                <TODO store={this.props.store}/>
+                <GOAL store={this.props.store}/>
             </div>
         )
     }
 }
 ReactDOM.render(
-    <App />,
+    <App store={store} />,
     document.getElementById('react')
 )
         
