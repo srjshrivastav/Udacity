@@ -42,7 +42,9 @@ class TODO extends React.Component{
     render(){
         return(
             <div>
-                <h3>TODOs</h3>
+                <h2>TODOs</h2>
+                <input id='todo' placeholder='Enter TODO' ref={(value)=>this.input=value} />
+
                 <LIST />
             </div>
         )
@@ -53,7 +55,8 @@ class GOAL extends React.Component{
     render(){
         return(
             <div>
-                <h3>GOAL</h3>
+                <h2>GOAL</h2>
+                <input id='goal' placeholder='Enter GOAL' ref={(value)=>this.input=value} />
                 <LIST />
             </div>
         )
