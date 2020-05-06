@@ -111,6 +111,14 @@ function goals(state=[],action){
             return state
     }
 }
+function loading(state=true,action){
+    switch(action.type){
+        case RECEIVE_DATA:
+            return false
+        default:
+            return state
+    }
+}
 
 function generateId(){
     return Math.random().toString(36).substring(2)+(new Date()).getTime().toString(36)
@@ -131,7 +139,8 @@ const check=(store)=>(next)=>(action)=>{
 }
 const store = Redux.createStore(Redux.combineReducers({
     todos,
-    goals
+    goals,
+    loading,
 }),Redux.applyMiddleware(check))
 
 
