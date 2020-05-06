@@ -37,7 +37,8 @@
             {
                 props.items.map((item)=>(
                     <li key={item.id}>
-                        <span>{item.name}</span>
+                        <span onClick={()=>props.toggle && props.toggle(toggleToDoAction(item.id)) }  
+                        style={{textDecoration:item.complete?'line-through':'none'}}>{item.name}</span>
                         <button onClick={()=>{
                             props.store.dispatch(props.remove(item.id))
                         }}>X</button>
@@ -69,7 +70,8 @@ class TODO extends React.Component{
                 <button onClick={(event)=>this.addItem(event)}> ADD TODO</button>
 
                 <LIST items={this.props.todos} store={this.props.store} 
-                        remove={removeToDoAction}/>
+                        remove={removeToDoAction}
+                        toggle={this.props.store.dispatch}/>
             </div>
         )
     }
