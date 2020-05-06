@@ -34,7 +34,16 @@
         function LIST(props){
     return(
         <ul>
-        <li>List</li>
+            {
+                props.items.map((item)=>(
+                    <li key={item.id}>
+                        <span>{item.name}</span>
+                        <button onClick={()=>{
+                            props.store.dispatch(props.remove(item.id))
+                        }}>X</button>
+                    </li>
+                ))
+            }
         </ul>
        
     )
@@ -45,6 +54,11 @@ class TODO extends React.Component{
         const name = this.input.value
         this.input.value=''
         
+        this.props.store.dispatch(addToDoAction({
+        name,
+        complete:false,
+        id: generateId()
+    }))
     }
 
     render(){
@@ -54,7 +68,8 @@ class TODO extends React.Component{
                 <input id='todo' placeholder='Enter TODO' ref={(value)=>this.input=value} />
                 <button onClick={(event)=>this.addItem(event)}> ADD TODO</button>
 
-                <LIST />
+                <LIST items={this.props.todos} store={this.props.store} 
+                        remove={removeToDoAction}/>
             </div>
         )
     }
@@ -77,19 +92,26 @@ class GOAL extends React.Component{
                 <h2>GOAL</h2>
                 <input id='goal' placeholder='Enter GOAL' ref={(value)=>this.input=value} />
                 <button onClick={(event)=>this.addItem(event)}> ADD GOAL</button>
-                <LIST />
+                <LIST items={this.props.goals} store={this.props.store} 
+                remove={removeGoalAction}/>
             </div>
         )
     }
 }
 
 class App extends React.Component{
+    componentDidMount(){
+        const {store} = this.props
+        store.subscribe(()=>this.forceUpdate())
+    }
 
     render(){
+        const {store} = this.props
+        const {todos,goals}=store.getState()
         return(
             <div>
-                <TODO store={this.props.store}/>
-                <GOAL store={this.props.store}/>
+                <TODO todos={todos} store={this.props.store}/>
+                <GOAL goals={goals} store={this.props.store}/>
             </div>
         )
     }
