@@ -39,6 +39,7 @@ const REMOVE_GOAL = 'REMOVE_GOAL'
 const ADD_TODO = 'ADD_TODO'
 const REMOVE_TODO = 'REMOVE_TODO'
 const TOGGLE_TODO = 'TOGGLE_TODO'
+const RECEIVE_DATA = 'RECEIVE_DATA'
 //App Code
 //*************************Action Creators********************************
 function addToDoAction(todo){
@@ -66,6 +67,13 @@ function addGoalAction(goal){
         goal
     }
 }
+function receiveDataAction(todos,goals){
+    return{
+        type:RECEIVE_DATA,
+        todos,
+        goals
+    }
+}
 
 function removeGoalAction(id){
     return{
@@ -84,6 +92,8 @@ function todos(state=[],action){
             return state.map((todo)=>(
                 todo.id !== action.id?todo:Object.assign({},todo,{complete:!todo.complete})
             ))
+        case RECEIVE_DATA:
+            return action.todos
         default:
             return state
     }
@@ -95,6 +105,8 @@ function goals(state=[],action){
             return state.concat([action.goal])
         case REMOVE_GOAL:
             return state.filter((goal)=>goal.id!==action.id)
+        case RECEIVE_DATA:
+            return action.goals
         default:
             return state
     }
