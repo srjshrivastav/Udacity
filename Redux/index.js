@@ -122,72 +122,7 @@ const store = Redux.createStore(Redux.combineReducers({
     goals
 }),Redux.applyMiddleware(check))
 
-store.subscribe(()=>{
-    const {todos, goals} = store.getState()
-  document.getElementById('todoItem').innerHTML = ''
-  document.getElementById('goalItem').innerHTML = ''
-    todos.forEach((todo)=>addTodoDOM(todo))
-    goals.forEach((goal)=>addGaolDOM(goal))
-})
-
-function addTodo(){
-    let input = document.getElementById('todo')
-    let name = input.value 
-    input.value=''
-    store.dispatch(addToDoAction({
-        name,
-        complete:false,
-        id: generateId()
-    }))
-}
-
-function addGoal(){
-    let input = document.getElementById('goal')
-    let name = input.value 
-    input.value=''
-    store.dispatch(addGoalAction({
-        name,
-        id: generateId()
-    }))
-}
-
-document.getElementById('todoBtn').addEventListener('click',addTodo)
-document.getElementById('goalBtn').addEventListener('click',addGoal)
 
 
-function createRemoveButton(onClick){
-    const removeBtn = document.createElement('button')
-    removeBtn.innerHTML='X'
-    removeBtn.addEventListener('click',onClick)
-    return removeBtn
 
-}
 
-function addTodoDOM(todo){
-    const node = document.createElement('li')
-    const txt = document.createTextNode(todo.name)
-
-    const rmBtn = createRemoveButton(()=>{
-        store.dispatch(removeToDoAction(todo.id))
-    })
-    node.appendChild(txt)
-    node.appendChild(rmBtn)
-    const btn = document.createElement('button')
-    node.style.textDecoration = todo.complete?'line-through':'none'
-    node.addEventListener('click',()=>{
-        store.dispatch(toggleToDoAction(todo.id))
-    })
-
-    document.getElementById('todoItem').appendChild(node)
-}
-function addGaolDOM(goal){
-    const node = document.createElement('li')
-    const txt = document.createTextNode(goal.name)
-    const btn = createRemoveButton(()=>{
-        store.dispatch(removeGoalAction(goal.id))
-    })
-    node.appendChild(txt)
-    node.appendChild(btn)
-
-    document.getElementById('goalItem').appendChild(node)
-}
