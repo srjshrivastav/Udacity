@@ -48,6 +48,19 @@ function addToDoAction(todo){
         todo
     }
 }
+
+function handleAddTodo(name,cb){
+    return (dispatch)=>{
+        API.saveTodo(name)
+        .then((todo)=>{
+            dispatch(addToDoAction(todo))
+            cb
+        })
+        .catch(()=>{
+            alert('Oops! An error occurred try again')
+        })}
+
+}
 function removeToDoAction(id){
     return{
         type:REMOVE_TODO,
@@ -79,6 +92,20 @@ function addGoalAction(goal){
         goal
     }
 }
+function handleAddGoal(name,cb){
+    return (dispatch)=>{
+        API.saveGoal(name)
+        .then((goal)=>{
+           dispatch(addGoalAction(goal))
+           cb
+        })
+        .catch(()=>{
+            alert('Oops! An error occurred try again')
+        })
+
+    }
+}
+
 function receiveDataAction(todos,goals){
     return{
         type:RECEIVE_DATA,

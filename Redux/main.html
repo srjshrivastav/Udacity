@@ -37,17 +37,8 @@
 class TODO extends React.Component{
     addItem=(e)=>{
         e.preventDefault()
-        const name = this.input.value
-        API.saveTodo(name)
-        .then((todo)=>{
-            this.props.store.dispatch(addToDoAction(todo))
-            this.input.value=''
-        })
-        .catch(()=>{
-            alert('Oops! An error occurred try again')
-        })
-
-    
+        this.props.store.dispatch(handleAddTodo(this.input.value,
+        ()=>{this.input.value=''}))
     }
     removeItem=(todo)=>{
         this.props.store.dispatch(handleDeleteTodo(todo))
@@ -79,18 +70,8 @@ class TODO extends React.Component{
 class GOAL extends React.Component{
     addItem=(e)=>{
         e.preventDefault()
-        const name = this.input.value
-        this.input.value=''
-        API.saveGoal(name)
-        .then((goal)=>{
-            this.props.store.dispatch(addGoalAction(goal))
-            this.input.value=''
-        })
-        .catch(()=>{
-            alert('Oops! An error occurred try again')
-        })
-
-    }
+        this.props.store.dispatch(handleAddGoal(this.input.value,()=>{this.input.value=''}))
+   }
 
     removeItem=(goal)=>{
         this.props.store.dispatch(removeGoalAction(goal.id))
