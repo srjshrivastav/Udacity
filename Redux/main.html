@@ -36,18 +36,10 @@
 
             )
         }
-        class ConnectedTODO extends React.Component{
-            render(){
-                return(
-                    <context.Consumer>
-                        {(store)=>{
-                            const { todos } = store.getState()
-                           return <TODO dispatch={store.dispatch} todos={todos} />
-                        }}
-                        </context.Consumer>
-                )
-            }
-        }
+        const ConnectedTODO = connect((state)=>{
+            todos:state.getState()
+            dispatch:state.dispatch()
+        })(TODO)
         class TODO extends React.Component {
             addItem = (e) => {
                 e.preventDefault()
@@ -80,18 +72,10 @@
                 )
             }
         }
-        class ConnectedGoals extends React.Component{
-            render(){
-                return(
-                    <context.Consumer>
-                        {(store)=>{
-                            const { goals } = store.getState()
-                           return <GOAL dispatch={store.dispatch} goals={goals} />
-                        }}
-                        </context.Consumer>
-                )
-            }
-        }
+        const ConnectedGoals = connect((state)=>{
+            goals:state.getState()
+            dispatch:state.dispatch()
+        })(GOAL)
 
         class GOAL extends React.Component {
             addItem = (e) => {
@@ -122,21 +106,22 @@
                 )
             }
         }
+        const ConnectedApp = connect((state)=>{
+            loading:state.loading
+            dispatch:state.dispatch
+        })(App)
 
         class App extends React.Component {
             componentDidMount() {
-                const { store } = this.props
-                store.dispatch(handleInitialData())
-                store.subscribe(() => this.forceUpdate())
+                const { dispatch } = this.props
+                dispatch(handleInitialData())
 
 
             }
 
             render() {
-                const { store } = this.props
-                const { loading } = store.getState()
 
-                if (loading === true) {
+                if (this.props.loading === true) {
                     return <h3>Loading....</h3>
                 }
                 return (
@@ -148,17 +133,7 @@
             }
         }
         const context = React.createContext()
-        class ConnectedApp extends React.Component{
-            render(){
-                return(
-                    <context.Consumer>
-                        {(store)=>{
-                           return  <App store={store}/>
-                        }}
-                        </context.Consumer>
-                )
-            }
-        }
+
         class Provider extends React.Component{
             render(){
                 return(
