@@ -21,10 +21,10 @@
             {
                 props.items.map((item)=>(
                     <li key={item.id}>
-                        <span onClick={()=>props.toggle && props.toggle(toggleToDoAction(item.id)) }  
+                        <span onClick={()=>props.toggle && props.toggle(item.id) }  
                         style={{textDecoration:item.complete?'line-through':'none'}}>{item.name}</span>
                         <button onClick={()=>{
-                            props.store.dispatch(props.remove(item.id))
+                            props.remove(item)
                         }}>X</button>
                     </li>
                 ))
@@ -45,6 +45,22 @@ class TODO extends React.Component{
         id: generateId()
     }))
     }
+    removeItem=(todo)=>{
+        this.props.store.dispatch(removeToDoAction(todo.id))
+        API.deleteTodo(todo.id)
+            .catch(()=>{
+                this.props.store.dispatch(addToDoAction(todo))
+                alert('Oops! An error Occurred')
+            })
+    }
+    toggle=(id)=>{
+        this.props.store.dispatch(toggleToDoAction(id))
+        API.saveTodoToggle(id)
+        .catch(()=>{
+            this.props.store.dispatch(toggleToDoAction(id))
+            alert('Oops! An error occurred')
+        })
+    }
 
     render(){
         return(
@@ -54,8 +70,8 @@ class TODO extends React.Component{
                 <button onClick={(event)=>this.addItem(event)}> ADD TODO</button>
 
                 <LIST items={this.props.todos} store={this.props.store} 
-                        remove={removeToDoAction}
-                        toggle={this.props.store.dispatch}/>
+                        remove={this.removeItem}
+                        toggle={this.toggle}/>
             </div>
         )
     }
@@ -72,6 +88,17 @@ class GOAL extends React.Component{
     }))
 
     }
+
+    removeItem=(goal)=>{
+        this.props.store.dispatch(removeGoalAction(goal.id))
+        API.deleteGoal(goal.id)
+            .catch(()=>{
+                this.props.store.dispatch(addGoalAction(goal))
+                alert('Oops! An error Occurred')
+            })
+    }
+
+
     render(){
         return(
             <div>
@@ -79,7 +106,7 @@ class GOAL extends React.Component{
                 <input id='goal' placeholder='Enter GOAL' ref={(value)=>this.input=value} />
                 <button onClick={(event)=>this.addItem(event)}> ADD GOAL</button>
                 <LIST items={this.props.goals} store={this.props.store} 
-                remove={removeGoalAction}/>
+                remove={this.removeItem}/>
             </div>
         )
     }
