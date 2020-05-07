@@ -1,6 +1,6 @@
 import check from './checker'
 import thunk from 'redux-thunk'
-import {applyMiddleware} from 'react-redux'
+import {applyMiddleware} from 'redux'
 
 export default applyMiddleware(
     thunk,

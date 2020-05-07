@@ -4,7 +4,7 @@ export const RECEIVE_DATA = 'RECEIVE_DATA'
 
 export function handleInitialData() {
     return (dispatch) => {
-        Promise.all([
+        return Promise.all([
             API.fetchTodos(),
             API.fetchGoals(),
         ]).then(([todos, goals]) => {

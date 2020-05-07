@@ -28,7 +28,7 @@ export function handleAddTodo(name, cb) {
         API.saveTodo(name)
             .then((todo) => {
                 dispatch(addToDo(todo))
-                cb
+                cb()
             })
             .catch(() => {
                 alert('Oops! An error occurred try again')

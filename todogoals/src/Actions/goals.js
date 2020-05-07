@@ -20,7 +20,7 @@ export function handleAddGoal(name, cb) {
         API.saveGoal(name)
             .then((goal) => {
                 dispatch(addGoal(goal))
-                cb
+                cb()
             })
             .catch(() => {
                 alert('Oops! An error occurred try again')
@@ -32,10 +32,9 @@ export function handleAddGoal(name, cb) {
 export function handleDeleteGoal(goal) {
     return (dispatch) => {
         dispatch(removeGoal(goal.id))
-        API.deleteGoal(goal.id)
+       return API.deleteGoal(goal.id)
             .then((goal) => {
                 dispatch(addGoal(goal))
-                cb
             })
             .catch(() => {
                 alert('Oops! An error occurred try again')
