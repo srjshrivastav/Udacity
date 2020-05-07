@@ -42,37 +42,38 @@ const TOGGLE_TODO = 'TOGGLE_TODO'
 const RECEIVE_DATA = 'RECEIVE_DATA'
 //App Code
 //*************************Action Creators********************************
-function addToDoAction(todo){
-    return{
-        type:ADD_TODO,
+function addToDoAction(todo) {
+    return {
+        type: ADD_TODO,
         todo
     }
 }
 
-function handleAddTodo(name,cb){
-    return (dispatch)=>{
+function handleAddTodo(name, cb) {
+    return (dispatch) => {
         API.saveTodo(name)
-        .then((todo)=>{
-            dispatch(addToDoAction(todo))
-            cb
-        })
-        .catch(()=>{
-            alert('Oops! An error occurred try again')
-        })}
+            .then((todo) => {
+                dispatch(addToDoAction(todo))
+                cb
+            })
+            .catch(() => {
+                alert('Oops! An error occurred try again')
+            })
+    }
 
 }
-function removeToDoAction(id){
-    return{
-        type:REMOVE_TODO,
-        id:id
+function removeToDoAction(id) {
+    return {
+        type: REMOVE_TODO,
+        id: id
     }
 }
 
-function handleDeleteTodo(todo){
-    return (dispatch)=>{
+function handleDeleteTodo(todo) {
+    return (dispatch) => {
         dispatch(removeToDoAction(todo.id))
         API.deleteTodo(todo.id)
-            .catch(()=>{
+            .catch(() => {
                 dispatch(addToDoAction(todo))
                 alert('Oops! An error Occurred')
             })
@@ -80,67 +81,67 @@ function handleDeleteTodo(todo){
 
 }
 
-function toggleToDoAction(id){
-    return{
-        type:TOGGLE_TODO,
-        id:id
+function toggleToDoAction(id) {
+    return {
+        type: TOGGLE_TODO,
+        id: id
     }
 }
-function addGoalAction(goal){
-    return{
-        type:ADD_GOAL,
+function addGoalAction(goal) {
+    return {
+        type: ADD_GOAL,
         goal
     }
 }
-function handleAddGoal(name,cb){
-    return (dispatch)=>{
+function handleAddGoal(name, cb) {
+    return (dispatch) => {
         API.saveGoal(name)
-        .then((goal)=>{
-           dispatch(addGoalAction(goal))
-           cb
-        })
-        .catch(()=>{
-            alert('Oops! An error occurred try again')
-        })
+            .then((goal) => {
+                dispatch(addGoalAction(goal))
+                cb
+            })
+            .catch(() => {
+                alert('Oops! An error occurred try again')
+            })
 
     }
 }
 
-function handleInitialData(){
-    return (dispatch)=>{
+function handleInitialData() {
+    return (dispatch) => {
         Promise.all([
             API.fetchTodos(),
             API.fetchGoals(),
-    ]).then(([todos,goals])=>{
-        dispatch(receiveDataAction(todos,goals))
-    })
+        ]).then(([todos, goals]) => {
+            dispatch(receiveDataAction(todos, goals))
+        })
     }
 }
-function receiveDataAction(todos,goals){
-    return{
-        type:RECEIVE_DATA,
+function receiveDataAction(todos, goals) {
+    return {
+        type: RECEIVE_DATA,
         todos,
         goals
     }
 }
 
-function removeGoalAction(id){
-    return{
-        type:REMOVE_GOAL,
-        id:id
+function removeGoalAction(id) {
+    return {
+        type: REMOVE_GOAL,
+        id: id
     }
 }
 
 //***************************end******************************
-function todos(state=[],action){
-    switch(action.type){
+function todos(state = [], action) {
+    switch (action.type) {
         case ADD_TODO:
             return state.concat([action.todo])
         case REMOVE_TODO:
-            return state.filter((todo)=>todo.id!==action.id)
+            return state.filter((todo) => todo.id !== action.id)
         case TOGGLE_TODO:
-            return state.map((todo)=>(
-                todo.id !== action.id?todo:Object.assign({},todo,{complete:!todo.complete})
+            return state.map((todo) => (
+                todo.id !== action.id ? todo : Object.assign({}, todo, { complete: !todo.complete })
             ))
         case RECEIVE_DATA:
             return action.todos
@@ -149,20 +150,20 @@ function todos(state=[],action){
     }
 }
 
-function goals(state=[],action){
-    switch(action.type){
+function goals(state = [], action) {
+    switch (action.type) {
         case ADD_GOAL:
             return state.concat([action.goal])
         case REMOVE_GOAL:
-            return state.filter((goal)=>goal.id!==action.id)
+            return state.filter((goal) => goal.id !== action.id)
         case RECEIVE_DATA:
             return action.goals
         default:
             return state
     }
 }
-function loading(state=true,action){
-    switch(action.type){
+function loading(state = true, action) {
+    switch (action.type) {
         case RECEIVE_DATA:
             return false
         default:
@@ -170,8 +171,8 @@ function loading(state=true,action){
     }
 }
 
-function generateId(){
-    return Math.random().toString(36).substring(2)+(new Date()).getTime().toString(36)
+function generateId() {
+    return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36)
 }
 // function app(state={},action){
 //     return {
@@ -179,11 +180,11 @@ function generateId(){
 //         goals : goals(state.goals,action)
 //     }
 // }
-const check=(store)=>(next)=>(action)=>{
-    if(action.type===ADD_TODO && action.todo.name.toLowerCase().includes('bitcoin'))
-            return alert('Nope! Thats a bad Idea')
-    if(action.type===ADD_GOAL && action.goal.name.toLowerCase().includes('bitcoin'))
-            return alert('Nope! Thats a bad Idea')
+const check = (store) => (next) => (action) => {
+    if (action.type === ADD_TODO && action.todo.name.toLowerCase().includes('bitcoin'))
+        return alert('Nope! Thats a bad Idea')
+    if (action.type === ADD_GOAL && action.goal.name.toLowerCase().includes('bitcoin'))
+        return alert('Nope! Thats a bad Idea')
     return next(action)
 
 }
@@ -191,7 +192,7 @@ const store = Redux.createStore(Redux.combineReducers({
     todos,
     goals,
     loading,
-}),Redux.applyMiddleware(ReduxThunk.default,check))
+}), Redux.applyMiddleware(ReduxThunk.default, check))
 
 
 
