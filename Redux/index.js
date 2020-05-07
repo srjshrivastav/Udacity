@@ -66,14 +66,7 @@ function generateId() {
 //         goals : goals(state.goals,action)
 //     }
 // }
-const check = (store) => (next) => (action) => {
-    if (action.type === ADD_TODO && action.todo.name.toLowerCase().includes('bitcoin'))
-        return alert('Nope! Thats a bad Idea')
-    if (action.type === ADD_GOAL && action.goal.name.toLowerCase().includes('bitcoin'))
-        return alert('Nope! Thats a bad Idea')
-    return next(action)
 
-}
 const store = Redux.createStore(Redux.combineReducers({
     todos,
     goals,
