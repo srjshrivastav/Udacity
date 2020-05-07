@@ -47,12 +47,8 @@
                 this.props.dispatch(handleDeleteTodo(todo))
             }
             toggle = (id) => {
-                this.props.dispatch(toggleToDoAction(id))
-                API.saveTodoToggle(id)
-                    .catch(() => {
-                        this.props.dispatch(toggleToDoAction(id))
-                        alert('Oops! An error occurred')
-                    })
+                this.props.dispatch(handleToggleTodo(id))
+
             }
 
             render() {

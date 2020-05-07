@@ -34,103 +34,23 @@
 
 //Action Types
 
-const ADD_GOAL = 'ADD_GOAL'
-const REMOVE_GOAL = 'REMOVE_GOAL'
-const ADD_TODO = 'ADD_TODO'
-const REMOVE_TODO = 'REMOVE_TODO'
-const TOGGLE_TODO = 'TOGGLE_TODO'
-const RECEIVE_DATA = 'RECEIVE_DATA'
+
+
 //App Code
 //*************************Action Creators********************************
-function addToDoAction(todo) {
-    return {
-        type: ADD_TODO,
-        todo
-    }
-}
 
-function handleAddTodo(name, cb) {
-    return (dispatch) => {
-        API.saveTodo(name)
-            .then((todo) => {
-                dispatch(addToDoAction(todo))
-                cb
-            })
-            .catch(() => {
-                alert('Oops! An error occurred try again')
-            })
-    }
 
-}
-function removeToDoAction(id) {
-    return {
-        type: REMOVE_TODO,
-        id: id
-    }
-}
 
-function handleDeleteTodo(todo) {
-    return (dispatch) => {
-        dispatch(removeToDoAction(todo.id))
-        API.deleteTodo(todo.id)
-            .catch(() => {
-                dispatch(addToDoAction(todo))
-                alert('Oops! An error Occurred')
-            })
-    }
 
-}
 
-function toggleToDoAction(id) {
-    return {
-        type: TOGGLE_TODO,
-        id: id
-    }
-}
-function addGoalAction(goal) {
-    return {
-        type: ADD_GOAL,
-        goal
-    }
-}
-function handleAddGoal(name, cb) {
-    return (dispatch) => {
-        API.saveGoal(name)
-            .then((goal) => {
-                dispatch(addGoalAction(goal))
-                cb
-            })
-            .catch(() => {
-                alert('Oops! An error occurred try again')
-            })
 
-    }
-}
 
-function handleInitialData() {
-    return (dispatch) => {
-        Promise.all([
-            API.fetchTodos(),
-            API.fetchGoals(),
-        ]).then(([todos, goals]) => {
-            dispatch(receiveDataAction(todos, goals))
-        })
-    }
-}
-function receiveDataAction(todos, goals) {
-    return {
-        type: RECEIVE_DATA,
-        todos,
-        goals
-    }
-}
 
-function removeGoalAction(id) {
-    return {
-        type: REMOVE_GOAL,
-        id: id
-    }
-}
+
+
+
+
+
 
 //***************************end******************************
 function todos(state = [], action) {
