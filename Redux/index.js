@@ -55,6 +55,18 @@ function removeToDoAction(id){
     }
 }
 
+function handleDeleteTodo(todo){
+    return (dispatch)=>{
+        dispatch(removeToDoAction(todo.id))
+        API.deleteTodo(todo.id)
+            .catch(()=>{
+                dispatch(addToDoAction(todo))
+                alert('Oops! An error Occurred')
+            })
+    }
+
+}
+
 function toggleToDoAction(id){
     return{
         type:TOGGLE_TODO,
@@ -81,6 +93,7 @@ function removeGoalAction(id){
         id:id
     }
 }
+
 //***************************end******************************
 function todos(state=[],action){
     switch(action.type){
@@ -141,7 +154,7 @@ const store = Redux.createStore(Redux.combineReducers({
     todos,
     goals,
     loading,
-}),Redux.applyMiddleware(check))
+}),Redux.applyMiddleware(ReduxThunk.default,check))
 
 
 

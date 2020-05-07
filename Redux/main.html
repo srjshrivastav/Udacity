@@ -8,6 +8,7 @@
         <script src="https://unpkg.com/react-dom@16.3.0-alpha.1/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
         <script src="https://tylermcginnis.com/goals-todos-api/index.js"></script>
+        <script src="https://unpkg.com/redux-thunk@2.2.0/dist/redux-thunk.min.js"></script>
     </head>
     <body>
         <div id='react'></div>
@@ -49,12 +50,7 @@ class TODO extends React.Component{
     
     }
     removeItem=(todo)=>{
-        this.props.store.dispatch(removeToDoAction(todo.id))
-        API.deleteTodo(todo.id)
-            .catch(()=>{
-                this.props.store.dispatch(addToDoAction(todo))
-                alert('Oops! An error Occurred')
-            })
+        this.props.store.dispatch(handleDeleteTodo(todo))
     }
     toggle=(id)=>{
         this.props.store.dispatch(toggleToDoAction(id))
@@ -97,6 +93,7 @@ class GOAL extends React.Component{
     }
 
     removeItem=(goal)=>{
+        this.props.store.dispatch(removeGoalAction(goal.id))
         this.props.store.dispatch(removeGoalAction(goal.id))
         API.deleteGoal(goal.id)
             .catch(()=>{
