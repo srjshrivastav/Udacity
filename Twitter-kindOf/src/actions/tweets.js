@@ -7,7 +7,7 @@ export const ADD_TWEET ='ADD_TWEET'
 export function getTweet(tweets){
     return{
         type:RECEIVE_TWEET,
-        tweets
+        tweets,
     }
 }
 
@@ -21,7 +21,7 @@ export function handleaddTweet(text,replyingTo){
     return(dispatch,getState)=>{
         const {authUser} = getState()
         dispatch(showLoading())
-
+        console.log("Authorrrr::",authUser)
         return saveTweet({
            text,
            author:authUser,

@@ -24,8 +24,7 @@ class App extends Component {
         {this.props.loading===true?null
         : <div>
           <Route path='/' exact component={Dashboard} />
-          <Route path='/tweet/hbsc73kzqi75rg7v1e0i6a' exact render={()=>{
-            <TweetPage id={'hbsc73kzqi75rg7v1e0i6a'} />}} />
+          <Route exact path='/tweet/:id' component={TweetPage} />
           <Route path='/new' exact component={NewTweet} />
           </div>
         }
@@ -36,4 +35,10 @@ class App extends Component {
   }
 }
 
-export default connect()(App)
+function mapStateToProps({ authUser }){
+  return{
+    loading : authUser === null
+  }
+}
+
+export default connect(mapStateToProps)(App)

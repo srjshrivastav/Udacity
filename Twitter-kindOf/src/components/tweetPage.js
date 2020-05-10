@@ -1,31 +1,29 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Tweet from './tweet'
-import newTweet from './newTweet'
+import NewTweet from './newTweet'
 
 class TweetPage extends React.Component{
     render(){
         const {id,replies} = this.props
-        console.log("iiidhaar Hunnn",id,replies)
         return(
-            <di>
+            <div>
                <Tweet id={id} />
-               <newTweet id={id} />
-               {replies.replies!==0 &&<p className='center'>Replies</p>}
+               <NewTweet id={id} />
+               {replies.length!==0 &&<p className='center'>Replies</p>}
                <ul>
                    {replies.map((replyId)=>(
                        <li key={replyId}>
-                           {console.log(replyId)}
                            <Tweet id={replyId} />
                        </li>
                    ))}
                    </ul>
-            </di>
+            </div>
         )
     }
 }
-function mapStateToProps({authUser,tweets,users},{id}){
-
+function mapStateToProps({authUser,tweets,users},props){
+    const {id}  = props.match.params
 
     return{
         id,

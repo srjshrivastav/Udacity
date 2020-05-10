@@ -24,12 +24,14 @@ export default function tweets(state={},action){
             if(tweet.replyingTo!==null){
                 replyingTo={
                     [tweet.replyingTo]:{
-                        ...state,
+                        ...state[tweet.replyingTo],
                         replies:state[tweet.replyingTo].replies.concat([tweet.id])
                     }
                 }
             }
-            console.log("newww",action)
+            console.log({...state,
+                [action.tweet.id]:action.tweet,
+                ...replyingTo })
             return{
                 ...state,
                 [action.tweet.id]:action.tweet,

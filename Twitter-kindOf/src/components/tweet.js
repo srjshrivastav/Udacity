@@ -23,6 +23,9 @@ class Tweet extends React.Component{
 
     render(){
         const {tweet}=this.props
+        if(tweet === null){
+            return <p>This tweet doesn't exists</p>
+        }
 
         const {name,replies,likes,timestamp,avatar,text,id,hasLiked,parent} = tweet
 
@@ -40,6 +43,7 @@ class Tweet extends React.Component{
                             </button>
                         )}
                         <p>{text}</p>
+                        </div>
                         <div className='tweet-icons'>
                         <TiArrowBackOutline className='tweet-icon'/>
                         <span>{
@@ -48,8 +52,6 @@ class Tweet extends React.Component{
                         :<TiHeartOutline className='tweet-icon'/>}</button>
                         <span>{likes!==0&&likes}</span>
                         </div>
-
-                        </div>
                     </div>
                 </div>
 
@@ -57,8 +59,10 @@ class Tweet extends React.Component{
         )
     }
 }
-function  mapStateToProps({authUser,tweets,users},{id}) {
+function  mapStateToProps({authUser,users,tweets},{id}) {
+    console.log(tweets,id)
     const tweet = tweets[id]
+    // console.log("Abb Idharr",users,tweet,users[tweet.author])
     const parentTweet = tweet? tweets[tweet.replyingTo] :null
     return{
         authUser,
